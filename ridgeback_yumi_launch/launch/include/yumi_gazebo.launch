@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <rosparam file="$(find yumi_control)/config/gripper_controllers.yaml" command="load" ns="/yumi"/>
+  <arg name="gripper_controllers" default="gripper_effort_controller_r
+                                           gripper_effort_controller_l"/>
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg gripper_controllers)" ns="/yumi"/>
+
+  <node name="yumi_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <remap from="/joint_states" to="/yumi/joint_states" />
+  </node>
+  <node name="grippers_remapper" pkg="yumi_hw" type="gazebo_grippers_remap.py" />
+
+</launch>

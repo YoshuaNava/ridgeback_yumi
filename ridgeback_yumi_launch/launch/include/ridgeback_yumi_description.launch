@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="ridgeback_config" default="base" />
+  <arg name="initial_pos" default="" />
+  <arg name="arms_hardware_interface" default="PositionJointInterface" />
+
+  <include file="$(find ridgeback_yumi_description)/launch/description.launch">
+      <arg name="config" value="$(arg ridgeback_config)" />
+      <arg name="arms_hardware_interface" value="$(arg arms_hardware_interface)" />
+  </include>
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model ridgeback_yumi $(arg initial_pos) -param robot_description"  respawn="false" output="screen" />  
+
+</launch>

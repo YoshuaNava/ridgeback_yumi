@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- URDF / SRDF parameters -->
+  <arg name="ridgeback_config" default="base" />
+  <arg name="use_traj_vel_controllers" default="false"/>
+  <arg name="egm" default="true"/>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find yumi_control)/config/ft_sensors_controllers.yaml" command="load" ns="/yumi"/>
+  <group unless="$(arg use_traj_vel_controllers)">
+    <rosparam file="$(find yumi_control)/config/velocity_controllers.yaml" command="load" ns="/yumi"/>
+    <arg name="arm_controllers" value="joint_state_controller
+                     joint_vel_controller_7_r
+                     joint_vel_controller_1_r
+                     joint_vel_controller_6_r
+                     joint_vel_controller_2_r
+                     joint_vel_controller_3_r
+                     joint_vel_controller_4_r
+                     joint_vel_controller_5_r
+                     joint_vel_controller_7_l
+                     joint_vel_controller_1_l
+                     joint_vel_controller_6_l
+                     joint_vel_controller_2_l
+                     joint_vel_controller_3_l
+                     joint_vel_controller_4_l
+                     joint_vel_controller_5_l
+                     force_torque_sensor_controller"/>
+    <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
+  </group>
+
+  <group if="$(arg use_traj_vel_controllers)">
+    <rosparam file="$(find yumi_control)/config/traj_controllers.yaml" command="load" ns="/yumi"/>
+    <arg name="arm_controllers" value="joint_state_controller
+                   joint_traj_vel_controller_l
+                   joint_traj_vel_controller_r
+                   force_torque_sensor_controller"/>
+    <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
+  </group>
+
+
+  <include file="$(find ridgeback_yumi_launch)/launch/include/yumi_egm_rws.launch" />  
+  <include file="$(find ridgeback_yumi_launch)/launch/include/ridgeback_yumi_description.launch" />
+  <include file="$(find ridgeback_yumi_launch)/launch/include/rviz.launch" />
+
+</launch>

@@ -5,9 +5,8 @@ find_package(catkin REQUIRED COMPONENTS roslaunch)
 
 catkin_package()
 
-roslaunch_add_file_check(launch/gazebo_simulation.launch)
-roslaunch_add_file_check(launch/live_robots.launch)
+roslaunch_add_file_check(launch/gazebo_pos_control.launch)
+roslaunch_add_file_check(launch/gazebo_vel_control.launch)
 
-install(DIRECTORY launch rviz
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+roslaunch_add_file_check(launch/gazebo_vel_control.launch)
+
