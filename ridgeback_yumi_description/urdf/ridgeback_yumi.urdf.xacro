@@ -20,7 +20,7 @@
 
 
   <!--yumi-->
-  <xacro:yumi name="yumi" hardware_interface="hardware_interface/VelocityJointInterface" parent="yumi_pedestal">
+  <xacro:yumi name="yumi" hardware_interface="hardware_interface/$(arg arms_interface)" parent="yumi_pedestal">
     <origin xyz="0 0 0.1" rpy="0 0 0" />
   </xacro:yumi>
 
