@@ -134,4 +134,11 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ridgeback_yumi_viz)/rviz/$(arg mode)_icpslam.rviz"/>
 
 
+	<arg name="lidar_vel" default="3.14"/>
+	<include file="$(find icpslam)/launch/gazebo_ref_frame_pub.launch"/>
+	<include file="$(find spinning_lidar_utils)/launch/laser_assembler.launch"/>
+	<node name="lidar_scan_to_cloud_node" pkg="spinning_lidar_utils" type="lidar_scan_to_cloud" />
+	<node pkg="rostopic" type="rostopic" name="rostopic" args="pub /spinning_lidar/spin_joint_vel_controller/command std_msgs/Float64 'data: $(arg lidar_vel)'"/>
+	<!-- Don't forget to run 'rosparam set use_sim_time true' as well! -->
+
 </launch>
